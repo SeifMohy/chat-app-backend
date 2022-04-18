@@ -4,6 +4,7 @@ import express, { json, urlencoded } from 'express'
 import helmet from 'helmet'
 import morgan from 'morgan'
 import AppDataSource from './data-source'
+import { authRouter } from './routes/auth'
 
 dotenv.config()
 
@@ -19,7 +20,7 @@ app.get('/', function (req, res) {
   res.send('server is running')
 })
 
-// app.use('/user', userRouter)
+app.use('/auth', authRouter)
 
 app.listen(process.env.PORT || 4545, async () => {
   await AppDataSource.initialize()
