@@ -3,9 +3,10 @@ import {
     Column,
     CreateDateColumn,
     Entity,
+    OneToOne,
     PrimaryGeneratedColumn,
-    UpdateDateColumn
 } from 'typeorm'
+import { Message } from './message'
 
 @Entity('User_Chat')
 export class User extends BaseEntity {
@@ -29,5 +30,8 @@ export class User extends BaseEntity {
 
   @CreateDateColumn({ type: 'timestamp' })
   dateCreated: Date
+
+  @OneToOne(()=> Message, message => message.user)
+  message: Message;
 
 }

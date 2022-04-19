@@ -20,6 +20,7 @@
     "node-gyp": "^9.0.0",
     "pg": "^8.7.3",
     "prettier": "^2.6.1",
+    "socket.io": "^4.4.1",
     "typeorm": "^0.3.4"
   },
   "devDependencies": {
