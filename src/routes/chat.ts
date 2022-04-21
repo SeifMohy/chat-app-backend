@@ -10,7 +10,7 @@ chatRouter.get("/user/:userId", async (req, res) => {
     try {
     const {userId} = req.params;
 
-    const userChats = await User.find({where: {id: +userId}, relations: {conversations:{messages:true}}})
+    const userChats = await User.find({where: {id: +userId}, relations: {conversations:{messages:{user:true}}}})
 
     if(!userChats){
         res.status(404).json("user does not have chats");
