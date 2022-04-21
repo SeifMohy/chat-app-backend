@@ -3,9 +3,12 @@ import {
     Column,
     CreateDateColumn,
     Entity,
-    OneToOne,
+    JoinTable,
+    ManyToMany,
+    OneToMany,
     PrimaryGeneratedColumn,
 } from 'typeorm'
+import { Conversation } from './conversation'
 import { Message } from './message'
 
 @Entity('User_Chat')
@@ -31,7 +34,11 @@ export class User extends BaseEntity {
   @CreateDateColumn({ type: 'timestamp' })
   dateCreated: Date
 
-  @OneToOne(()=> Message, message => message.user)
-  message: Message;
+  @OneToMany(()=> Message, message => message.user)
+  messages: Message[];
+
+  @ManyToMany(() => Conversation)
+  @JoinTable()
+  conversations: Conversation[];
 
 }

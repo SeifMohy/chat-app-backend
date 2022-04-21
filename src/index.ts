@@ -7,6 +7,7 @@ import AppDataSource from "./data-source";
 import { authRouter } from "./routes/auth";
 import { Server } from "socket.io";
 import { createServer } from "http";
+import { chatRouter } from "./routes/chat";
 
 const app = express();
 const server = createServer(app);
@@ -25,6 +26,7 @@ app.use(json());
 app.use(urlencoded({ extended: false }));
 
 app.use("/auth", authRouter);
+app.use("/chat", chatRouter);
 
 app.get("/", function (req, res) {
   res.send("server is running");
@@ -38,6 +40,7 @@ io.on("connection", (socket) => {
   socket.on("message", (message)=>{
       console.log(message);
       io.emit("new message", message);
+        
   })
 });
 server.listen(process.env.PORT || 4545, async () => {

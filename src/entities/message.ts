@@ -3,10 +3,10 @@ import {
     Column,
     CreateDateColumn,
     Entity,
-    JoinColumn,
-    OneToOne,
+    ManyToOne,
     PrimaryGeneratedColumn,
 } from 'typeorm'
+import { Conversation } from './conversation'
 import {User} from "./user"
 
 @Entity('Message_Chat')
@@ -20,11 +20,9 @@ export class Message extends BaseEntity {
   @CreateDateColumn({ type: 'timestamp' })
   dateCreated: Date
 
-  @Column()
-  receiver: string
-
-  @OneToOne(()=> User, user => user.message)
-  @JoinColumn()
+  @ManyToOne(()=> User, user => user.messages)
   user: User;
 
+  @ManyToOne(()=> Conversation, conversation => conversation.messages)
+  conversation: Conversation;
 }
