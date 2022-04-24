@@ -6,41 +6,65 @@ import { User } from "../entities/user";
 const chatRouter = express.Router();
 
 chatRouter.get("/user/:userId", async (req, res) => {
-//to find conversations by userId and provide last message
-    try {
-    const {userId} = req.params;
+  //to find conversations by userId and provide last message
+  try {
+    const { userId } = req.params;
 
-    const userChats = await User.find({where: {id: +userId}, relations: {conversations:{messages:{user:true}}}})
+    const userChats = await User.find({
+      where: { id: +userId },
+      relations: { conversations: { messages: { user: true } } },
+    });
 
-    if(!userChats){
-        res.status(404).json("user does not have chats");
+    if (!userChats) {
+      res.status(404).json("user does not have chats");
     }
     return res.status(200).json(userChats);
-
-} catch (error) {
+  } catch (error) {
     res.status(500).json({ error });
-}
+  }
 });
 
 chatRouter.get("/:conversationId", async (req, res) => {
-    //to find a specific conversation with messages and users
-        try {
-        const {conversationId } = req.params;
-    
-        const conversation = await Conversation.find({where: {id: +conversationId}, relations: {messages: {user: true}}})
-    
-        if(!conversation){
-            res.status(404).json("conversation does not exist");
-        }
-        return res.status(200).json(conversation);
-    
-    } catch (error) {
-        res.status(500).json({ error });
-    }
+  //to find a specific conversation with messages and users
+  try {
+    const { conversationId } = req.params;
+
+    const conversation = await Conversation.find({
+      where: { id: +conversationId },
+      relations: { messages: { user: true }, users: true },
     });
 
+    if (!conversation) {
+      res.status(404).json("conversation does not exist");
+    }
+    return res.status(200).json(conversation);
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+});
+
+chatRouter.get("/otherUser/:conversationId", async (req, res) => {
+  //to find the other user
+  try {
+    const { conversationId } = req.params;
+
+    const conversation = await Conversation.findOne({
+      where: { id: +conversationId },
+      relations: { users: true},
+    });
+
+    if (!conversation) {
+      res.status(404).json("conversation does not exist");
+    }
+    return res.status(200).json(conversation);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error });
+  }
+});
+
 chatRouter.post("/send/:userId/:conversationId", async (req, res) => {
-//to save sent messages
+  //to save sent messages
   try {
     const { userId, conversationId } = req.params;
 
@@ -72,7 +96,5 @@ chatRouter.post("/send/:userId/:conversationId", async (req, res) => {
     res.status(500).json({ error });
   }
 });
-
-
 
 export { chatRouter };
