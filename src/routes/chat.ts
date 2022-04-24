@@ -12,7 +12,7 @@ chatRouter.get("/user/:userId", async (req, res) => {
 
     const userChats = await User.find({
       where: { id: +userId },
-      relations: { conversations: { messages: { user: true } } },
+      relations: { conversations: { messages: { user: true }, users: true } },
     });
 
     if (!userChats) {
