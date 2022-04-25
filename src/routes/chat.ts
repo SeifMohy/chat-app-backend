@@ -43,26 +43,6 @@ chatRouter.get("/:conversationId", async (req, res) => {
   }
 });
 
-chatRouter.get("/otherUser/:conversationId", async (req, res) => {
-  //to find the other user
-  try {
-    const { conversationId } = req.params;
-
-    const conversation = await Conversation.findOne({
-      where: { id: +conversationId },
-      relations: { users: true},
-    });
-
-    if (!conversation) {
-      res.status(404).json("conversation does not exist");
-    }
-    return res.status(200).json(conversation);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error });
-  }
-});
-
 chatRouter.post("/send/:userId/:conversationId", async (req, res) => {
   //to save sent messages
   try {

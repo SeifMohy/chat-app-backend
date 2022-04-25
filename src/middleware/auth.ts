@@ -14,6 +14,7 @@ export const isAuthenticated = async (req: AuthRequest, res, next) => {
           })
         }
         req.email = token.email
+        //need to try and send the id i just dont know where to get it from
         next()
         // check if token is expired
       }

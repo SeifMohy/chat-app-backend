@@ -8,6 +8,7 @@ import { authRouter } from "./routes/auth";
 import { Server } from "socket.io";
 import { createServer } from "http";
 import { chatRouter } from "./routes/chat";
+import { userRouter } from "./routes/users";
 
 const app = express();
 const server = createServer(app);
@@ -27,6 +28,7 @@ app.use(urlencoded({ extended: false }));
 
 app.use("/auth", authRouter);
 app.use("/chat", chatRouter);
+app.use("/users", userRouter);
 
 app.get("/", function (req, res) {
   res.send("server is running");

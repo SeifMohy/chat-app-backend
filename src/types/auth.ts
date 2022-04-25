@@ -4,6 +4,7 @@ import { Request } from 'express'
 export interface MyToken extends JwtPayload {
   email: string
   exp: number
+  // id: number
 }
 
 export interface AuthRequest extends Request {
