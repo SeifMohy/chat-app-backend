@@ -49,7 +49,7 @@ chatRouter.post("/send/:userId/:conversationId", async (req, res) => {
     const { userId, conversationId } = req.params;
 
     const user = await User.findOneBy({ id: +userId });
-    const conversation = await User.findOneBy({ id: +conversationId });
+    const conversation = await Conversation.findOneBy({ id: +conversationId });
 
     if (!user) {
       return res.status(400).json({

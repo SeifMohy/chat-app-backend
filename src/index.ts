@@ -35,15 +35,22 @@ app.get("/", function (req, res) {
 });
 
 io.on("connection", (socket) => {
-  console.log("a user connected");
+  const users = [];
+  console.log("user connected");
+  for (let [id, socket] of io.of("/").sockets) {
+    users.push({
+      userID: id,
+    });
+  }
+  socket.emit("users", users);
+  console.log(users)
   socket.on("disconnect", () => {
     console.log("user disconnected");
   });
-  socket.on("message", (message)=>{
-      console.log(message);
-      io.emit("new message", message);
-        
-  })
+  socket.on("message", (message) => {
+    console.log(message);
+    io.emit("new message", message);
+  });
 });
 server.listen(process.env.PORT || 4545, async () => {
   await AppDataSource.initialize();
